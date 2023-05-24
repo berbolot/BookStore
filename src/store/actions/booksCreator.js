@@ -1,15 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../api";
 
 const fetchBooks = createAsyncThunk(
   "books/fetchAll",
   async (payload, thunkApi) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API}/books`, {
-        signal: thunkApi.signal,
-      });
-      const data = await response.json();
-      console.log(process.env);
-      return data;
+      const response = await api.getBooks();
+      return response.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err.message);
     }

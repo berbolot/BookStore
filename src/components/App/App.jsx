@@ -1,15 +1,16 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Booklist from "../Booklist/Booklist";
-import { useState } from "react";
+import { MainPage } from "../../pages";
 
 
 const App = () => {
- const [visible, setVisible] = useState(false);
-
-  return <div>App
-    <button onClick={() => setVisible((prev) => !prev)}>Press</button>
-     {!visible && <Booklist />} 
-  </div>;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default App;
