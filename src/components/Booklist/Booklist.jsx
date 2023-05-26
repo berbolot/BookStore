@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import fetchBooks from "../../store/actions/booksCreator";
 import BookListItem from "./BookListItem";
-import Loading from "../IsLoading/Loading";
-import error from "./img/404.webp"
+import Loading from "./IsLoading/Loading";
+import FnError from "./IsError/FnError";
 
 
 const Booklist = () => {
@@ -19,7 +19,7 @@ const Booklist = () => {
   console.log(books, booksIsError, booksIsLoading);
 
   if (booksIsError) {
-    return <div><img style={{width: '500px'}} src={error} alt="books" /></div>;
+    return <div>{<FnError />}</div>;
   }
 
   return (
