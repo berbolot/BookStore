@@ -1,43 +1,58 @@
 import { Button, Spinner, Table } from "react-bootstrap";
 import classes from "./styles.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setisOpen } from "../../store/reducers/cartSlice";
+import {
+  minusItem,
+  addItem,
+  removeItem,
+  setisOpen,
+} from "../../store/reducers/cartSlice";
 import { useEffect } from "react";
-import fetchAllCart from "../../store/actions/cartCreator";
 
 const CartItems = () => {
   const { items, itemsIsError, itemsIsLoading } = useSelector(
     (state) => state.cartReducer
   );
+  const { books } = useSelector((state) => state.booksReducer);
+
   const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(fetchAllCart());
     document.body.style.overflow = "hidden";
-
     return () => (document.body.style.overflow = "auto");
   }, []);
 
   const onOverlayClick = () => dispatch(setisOpen(false));
 
   const renderitems = (el, idx) => {
-    const { id, title, count, total } = el;
+    const { id, title, price, count, total } = el;
 
+    const plusToCart = () => {
+      dispatch(addItem(books.find((obj) => obj.id === id)));
+    };
+
+    const minusCart = () => {
+      dispatch(minusItem(books.find((obj) => obj.id === id)));
+    };
+
+    const removeToCart = () => {
+      dispatch(removeItem(id));
+    };
     return (
-      
       <tr key={`item-${id}`}>
         <td>{idx + 1}</td>
         <td>{title}</td>
         <td>{count}</td>
+        <td>{price}</td>
         <td>{total}</td>
+
         <td>
-          <Button variant="outline-success my-1">
+          <Button onClick={plusToCart} variant="outline-success my-1">
             <i className="fa-solid fa-circle-plus"></i>
           </Button>
-          <Button variant="outline-warning my-1">
+          <Button onClick={minusCart} variant="outline-warning my-1">
             <i className="fa-solid fa-circle-minus"></i>
           </Button>
-          <Button variant="outline-danger my-1">
+          <Button onClick={removeToCart} variant="outline-danger my-1">
             <i className="fa-solid fa-trash"></i>
           </Button>
         </td>
@@ -65,6 +80,7 @@ const CartItems = () => {
                 <th>Item</th>
                 <th>Count</th>
                 <th>Price</th>
+                <th>Total</th>
                 <th>Action</th>
               </tr>
             </thead>

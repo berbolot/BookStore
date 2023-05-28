@@ -5,7 +5,6 @@ import BookListItem from "./BookListItem";
 import Loading from "./IsLoading/Loading";
 import FnError from "./IsError/FnError";
 
-
 const Booklist = () => {
   const { books, booksIsLoading, booksIsError } = useSelector(
     (state) => state.booksReducer
@@ -16,7 +15,7 @@ const Booklist = () => {
     dispatch(fetchBooks());
   }, []);
 
-  console.log(books, booksIsError, booksIsLoading);
+  // console.log(books, booksIsError, booksIsLoading);
 
   if (booksIsError) {
     return <div>{<FnError />}</div>;
@@ -25,7 +24,7 @@ const Booklist = () => {
   return (
     <ul>
       {booksIsLoading ? (
-       <Loading />
+        <Loading />
       ) : (
         books.map((el) => <BookListItem key={`books-${el.id}`} book={el} />)
       )}
