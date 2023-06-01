@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import fetchAllCart from "../actions/cartCreator";
-
 const initialState = {
   isOpen: false,
-  totalPrice: 0,
   items: [],
   itemsIsError: "",
   itemsIsLoading: false,
@@ -16,41 +14,16 @@ const cartSlice = createSlice({
     setisOpen: (state, action) => {
       state.isOpen = action.payload;
     },
-    addItem(state, action) {
-      console.log(action.payload);
-      if (state.items.find((obj) => obj.id === action.payload.id)) {
-        const { id, price } = action.payload;
-        state.items = state.items.map((obj) => {
-          if (id === obj.id) {
-            obj.count += 1;
-            obj.total += price;
-          }
-          return obj;
-        });
-      } else {
-        state.items = [...state.items, action.payload];
-      }
-    },
-    removeItem(state, action) {
-      state.items = state.items.filter((obj) => obj.id !== action.payload);
-    },
-    minusItem(state, action) {
-      const { id, price } = action.payload;
-      state.items = state.items.map((obj) => {
-        if (obj.count < 1) {
-        } else if (id === obj.id) {
-          obj.count -= 1;
-          obj.total -= price;
-        }
-        return obj;
-      });
+
+    setCartItems: (state, action) => {
+      state.items = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllCart.pending, (state, action) => {
       state.itemsIsLoading = true;
       state.itemsIsError = "";
-      state.items = null;
+      state.items = [];
     });
 
     builder.addCase(fetchAllCart.fulfilled, (state, action) => {
@@ -62,12 +35,12 @@ const cartSlice = createSlice({
     builder.addCase(fetchAllCart.rejected, (state, action) => {
       state.itemsIsLoading = true;
       state.itemsIsError = action.payload;
-      state.items = null;
+      state.items = [];
     });
   },
 });
 
 const cartReducer = cartSlice.reducer;
 
-export const { setisOpen, addItem, removeItem, minusItem } = cartSlice.actions;
+export const { setisOpen, setCartItems } = cartSlice.actions;
 export default cartReducer;

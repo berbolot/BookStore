@@ -1,9 +1,16 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Booklist, CartItems, Header } from "../components";
 import classes from "./styles.module.css";
+import { useEffect } from "react";
+import fetchAllCart from "../store/actions/cartCreator";
 
 const MainPage = () => {
-  const { isOpen } = useSelector((state) => state.cartReducer)
+  const { isOpen } = useSelector((state) => state.cartReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllCart());
+  }, []);
   return (
     <>
       <header className={classes.header}>
@@ -13,7 +20,7 @@ const MainPage = () => {
         <Booklist />
       </main>
 
-     {isOpen && <CartItems />} 
+      {isOpen && <CartItems />}
     </>
   );
 };
